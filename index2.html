@@ -1,0 +1,231 @@
+<html lang = "en">
+   <head>
+      <link rel = "stylesheet"
+         href = "https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+      <script src = "https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+      <link rel = "stylesheet" href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <style>
+      	table, td, th {    
+    		border: 1px solid #ddd;
+    		text-align: left;
+		}
+
+		table {
+    		border-collapse: collapse;
+    		width: 100%;
+		}
+		th, td{
+			padding: 15px;
+		}
+         .box {         
+            color:white;
+            padding:10px;
+            text-align:center;
+            border-style: inset;
+         }
+         
+         .green {
+            background:gray;
+         }
+         
+         .blue {
+            background:lightblue;
+         }
+		 #item1:hover, #item2:hover{
+			background:white;
+			color:gray;
+		 }
+		 #contentRegion{
+			background:white;
+			color:white;
+            padding:10px;
+            text-align:center;
+            border-style: inset;
+		 }
+		 .bttn {
+			height: 30px;
+			width: 120px;
+			background: white;
+			color: gray;
+		 }
+		 .bttn:hover{
+			background:#444242;
+			color:white;
+		 }
+		 .bttn2 {
+			height: 30px;
+			width: 90px;
+			background: white;
+			color: gray;
+		 }
+		 .bttn2:hover{
+			background:#444242;
+			color:white;
+		 }
+
+      </style>
+      
+            
+   </head>
+   
+   <body ng-app = "firstApplication" > 
+      <div id = "layoutContainer" ng-controller = "layoutController as ctrl"
+          ng-cloak layout="column" style="height:1000px">
+         <div layout = "row" layout-xs = "column">
+            <div flex class = "green box">Student Crud App</div>
+         </div>
+         <div layout = "row" layout-xs = "column" flex>
+            <div flex="20" class = "green box">
+				<md-list>
+					<md-list-item id="item1" ng-click="listClicked('create')" >
+							<p>Create</p>
+					</md-list-item>
+					<md-list-item id="item2" ng-click="listClicked('show')" >
+							<p>Show</p>
+					</md-list-item>
+				</md-list>
+			</div>
+            <div flex id = "contentRegion" >
+				<div id="createDiv" style="background:gray;margin-top:100px;height:760px;width:600px;margin-left:400px;display:none">
+					<p style="font-size:200%;padding-top:50px;color: white;text-align:center">Registration Form</p>
+					<form name="stdInfo" style="padding-top:20px">
+						<md-input-container>
+							<input placeholder="Name" style="width: 360px; height: 60px; background:white" type="text" ng-model="name" name="name" required>
+   								<div ng-show = "stdInfo.name.$touched && stdInfo.name.$invalid" style="color:red" >
+									<div ng-show = "stdInfo.name.$error.required" >Name is required!</div>
+								</div>
+						</md-input-container>
+						<md-input-container>
+							<input placeholder="Roll" style="width: 360px; height: 60px; background:white" type="text" ng-model="roll" name="roll" ng-pattern="/^[0-9]+$/" required>
+							<div ng-show = "stdInfo.roll.$touched || (stdInfo.roll.$dirty && stdInfo.roll.$invalid)" style="color:red" >
+								<div ng-show = "stdInfo.roll.$error.required" >Roll is required!</div>
+								<div ng-show = "stdInfo.roll.$error.pattern" >Only int is allowed!</div>
+							</div>
+						</md-input-container>
+						<md-input-container>
+							<input placeholder="CGPA" style="width: 360px; height: 60px; background:white" type="text" ng-model="cgpa" name='cgpa' ng-pattern="/^[0-9]+[.]+[0-9]+$/" required>
+   							<div ng-show = "stdInfo.cgpa.$touched || (stdInfo.cgpa.$dirty && stdInfo.cgpa.$invalid)" style="color:red" >
+								<div ng-show = "stdInfo.cgpa.$error.required" >CGPA is required!</div>
+								<div ng-show = "stdInfo.cgpa.$error.pattern" >Only float is allowed!</div>
+							</div>
+						</md-input-container>
+						<md-input-container>
+							<input placeholder="Batch" style="width: 360px; height: 60px; background:white" type="text" ng-model="year" name="year" ng-pattern="/^[0-9]+$/" required>
+							<div ng-show = "stdInfo.year.$touched || (stdInfo.year.$dirty && stdInfo.year.$invalid)" style="color:red" >
+								<div ng-show = "stdInfo.year.$error.required" >Year is required!</div>
+								<div ng-show = "stdInfo.year.$error.pattern" >Only int is allowed!</div>
+							</div>
+						</md-input-container>
+						<md-input-container>
+							<input placeholder="DOB" style="width: 360px; height: 60px; background: white" type="date" ng-model="dob" name="dob" required>
+							<div ng-show = "stdInfo.dob.$touched && stdInfo.dob.$invalid" style="color:red" >
+								<div ng-show = "stdInfo.dob.$error.required" >DOB is required!</div>
+							</div>
+						</md-input-container><br>
+						<button style="width: 200px; height: 40px;margin-top:30px;" class="bttn" ng-click="validation()" 
+						ng-disabled="stdInfo.name.$invalid || stdInfo.roll.$invalid || stdInfo.cgpa.$invalid || stdInfo.year.$invalid || stdInfo.dob.$invalid">Save</button>
+					</form>
+				</div>
+				<div  id="showDiv" style="background:gray;margin-top:100px;height:700px;width:600px;margin-left:400px;display:none">
+					<p style="font-size:200%;padding-top:50px;color: white;text-align:center">Registered Students</p>
+					<div id="stdTableDiv" style="height:450px;width:580px;margin-left:10px;overflow:auto">
+						<table id="stdTable" style="background:white;color:gray;overflow:auto">
+
+						</table>
+					</div>
+				</div>
+			</div>
+         </div>
+      </div>
+<script language = "javascript">
+         angular
+            .module('firstApplication', ['ngMaterial'])
+            .controller('layoutController', layoutController);
+
+         function layoutController ($scope) {  
+			$scope.listClicked = function(param){
+				if (param==="create"){
+					document.getElementById('createDiv').style.display = "block";
+					document.getElementById('showDiv').style.display = "none";
+					$scope.validation = function(){
+						function Student(stdId, stdName, stdRoll, stdCGPA, stdYear, stdDOB, stdAge){
+							this.stdId = stdId;
+							this.stdName = stdName;
+							this.stdRoll = stdRoll;
+							this.stdCGPA = stdCGPA;
+							this.stdYear = stdYear;
+							this.stdDOB = stdDOB;
+							this.stdAge = stdAge;
+							this.stdInfo = function(){
+								return this.stdId + " " + this.stdName + " " + this.stdRoll + " " + this.stdAge;
+							}
+						}
+						var currDate = new Date();
+						var myDate = new Date($scope.dob);
+						var ageYear = currDate.getFullYear() - myDate.getFullYear();
+						var ageMonth = currDate.getMonth() - myDate.getMonth();
+						if ((ageMonth < 0) || (ageMonth === 0 && currDate.getDate() < myDate.getDate())){
+							--ageYear;
+						}
+						if (sessionStorage.getItem("students")===null){
+							student = new Student(1, $scope.name, $scope.roll, $scope.cgpa, $scope.year, $scope.dob, ageYear);
+							var students = new Array();
+							students.push(student);
+							sessionStorage.setItem("students", JSON.stringify(students));
+							alert("Size: " + students.length + " Info: " + student.stdInfo());
+						}
+						else{
+							var students = JSON.parse(sessionStorage.getItem("students"));
+							student = new Student(students.length + 1, $scope.name, $scope.roll, $scope.cgpa, $scope.year, $scope.dob, ageYear);
+							students.push(student);
+							sessionStorage.setItem("students", JSON.stringify(students));
+							alert("Size: " + students.length + " Info: " + student.stdInfo());
+						}
+					}
+				}
+				else if (param==="show"){
+					students = JSON.parse(sessionStorage.getItem("students"));
+					document.getElementById('showDiv').style.display = "block";
+					document.getElementById('createDiv').style.display = "none";
+					var stdTable = document.getElementById('stdTable');
+					stdTable.innerHTML = "";
+					var row2 = stdTable.insertRow(0);
+					var cells2 = new Array(5);
+					for (let j = 0; j < cells2.length ; ++j){
+						cells2[j] = row2.insertCell(j);
+					}
+					cells2[0].innerHTML = '<b>ID</b>';	
+					cells2[1].innerHTML = '<b>Name</b>';
+					cells2[2].innerHTML = '<b>Roll</b>';
+					cells2[3].innerHTML = '<b>Age</b>';
+					cells2[4].innerHTML = '<b>Action</b>';
+					for (let i = 0; i < students.length ; ++i){
+						var row = stdTable.insertRow(i+1);
+						var cells = new Array(5);
+						for (let j = 0; j < cells.length ; ++j){
+							cells[j] = row.insertCell(j);
+						}
+						cells[0].innerHTML = students[i].stdId;
+						cells[1].innerHTML = students[i].stdName;
+						cells[2].innerHTML = students[i].stdRoll;
+						cells[3].innerHTML = students[i].stdAge;
+						cells[4].innerHTML = '<input type="button" class="bttn2" ng-click="update('+students[i].stdId+')" value="update" ></input><button class="bttn2" onclick="del('+students[i].stdId+')" >Delete</button>';
+					}
+					
+				}
+			}
+			$scope.update = function(id){
+				alert("update");
+			}
+			$scope.del = function(id){
+				alert("delete"+id);
+			}
+        }	  
+      </script>
+   </body>
+
+</html>

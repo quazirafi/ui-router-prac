@@ -1,0 +1,20 @@
+<div  id="showDiv" style="background:gray;margin-top:100px;height:700px;width:600px;margin-left:400px;">
+	<p style="font-size:200%;padding-top:50px;color: white;text-align:center">Registered Students</p>
+	<div id="stdTableDiv" style="height:450px;width:580px;margin-left:10px;overflow:auto">
+		<table id="stdTable" style="background:white;color:gray;overflow:auto">
+			<tr>
+				<th>ID</th>
+				<th>Title</th>
+				<th>Action</th>
+			</tr>
+			<tr ng-repeat="student in students">
+				<td>{{student.stdId}}</td>
+				<td>{{student.stdName}}</td>
+				<td>
+					<input type="button" class="bttn2" ng-click="update(student)" value="update" ></input>
+					<input type="button" class="bttn2" ng-click="del(student)" value="delete" ></input>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>

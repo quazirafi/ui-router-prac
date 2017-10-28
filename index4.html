@@ -1,0 +1,196 @@
+<html lang = "en">
+   <head>
+      <link rel = "stylesheet"
+         href = "https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+      <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+      <script src = "https://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+      <link rel = "stylesheet" href = "https://fonts.googleapis.com/icon?family=Material+Icons">
+      <style>
+      	table, td, th {    
+    		border: 1px solid #ddd;
+    		text-align: left;
+		}
+
+		table {
+    		border-collapse: collapse;
+    		width: 100%;
+		}
+		th, td{
+			padding: 15px;
+		}
+         .box {         
+            color:white;
+            padding:10px;
+            text-align:center;
+            border-style: inset;
+         }
+         
+         .green {
+            background:gray;
+         }
+         
+         .blue {
+            background:lightblue;
+         }
+		 #item1:hover, #item2:hover{
+			background:white;
+			color:gray;
+		 }
+		 #contentRegion{
+			background:white;
+			color:white;
+            padding:10px;
+            text-align:center;
+            border-style: inset;
+		 }
+		 .bttn {
+			height: 30px;
+			width: 120px;
+			background: white;
+			color: gray;
+		 }
+		 .bttn:hover{
+			background:#444242;
+			color:white;
+		 }
+		 .bttn2 {
+			height: 30px;
+			width: 90px;
+			background: white;
+			color: gray;
+		 }
+		 .bttn2:hover{
+			background:#444242;
+			color:white;
+		 }
+
+      </style>
+      
+            
+   </head>
+   
+   <body ng-app = "firstApplication" > 
+      <div id = "layoutContainer" ng-controller = "layoutController as ctrl"
+          ng-cloak layout="column" style="height:1000px">
+         <div layout = "row" layout-xs = "column">
+            <div flex class = "green box">Student Crud App</div>
+         </div>
+         <div layout = "row" layout-xs = "column" flex>
+            <div flex="20" class = "green box">
+				<md-list>
+					<md-list-item id="item1" ng-click="listClicked('create')" >
+							<p>Create</p>
+					</md-list-item>
+					<md-list-item id="item2" ng-click="listClicked('show')" >
+							<p>Show</p>
+					</md-list-item>
+				</md-list>
+			</div>
+            <div flex id = "contentRegion" >
+				<div id="createDiv" style="background:gray;margin-top:100px;height:760px;width:600px;margin-left:400px;display:none">
+					<p style="font-size:200%;padding-top:50px;color: white;text-align:center">Registration Form</p>
+					<form name="stdInfo" style="padding-top:20px">
+						<md-input-container>
+							<input placeholder="TItle" style="width: 360px; height: 60px; background:white" type="text" ng-model="roll" name="roll" required>
+							<div ng-show = "stdInfo.roll.$touched || (stdInfo.roll.$dirty && stdInfo.roll.$invalid)" style="color:red">
+								<div ng-show = "stdInfo.roll.$error.required" >Title is required!</div>
+							</div>
+						</md-input-container>
+						<br>
+						<button style="width: 200px; height: 40px;margin-top:30px;" id="save-btn" class="bttn" ng-click="validation()" 
+						ng-disabled="stdInfo.roll.$invalid">Save</button>
+					</form>
+				</div>
+				<div  id="showDiv" style="background:gray;margin-top:100px;height:700px;width:600px;margin-left:400px;display:none">
+					<p style="font-size:200%;padding-top:50px;color: white;text-align:center">Registered Students</p>
+					<div id="stdTableDiv" style="height:450px;width:580px;margin-left:10px;overflow:auto">
+						<table id="stdTable" style="background:white;color:gray;overflow:auto">
+							<tr>
+								<th>ID</th>
+								<th>Title</th>
+								<th>Action</th>
+							</tr>
+							<tr ng-repeat="student in students">
+								<td>{{student.id}}</td>
+								<td>{{student.title}}</td>
+								<td>
+									<input type="button" class="bttn2" ng-click="update(student)" value="update" ></input>
+									<input type="button" class="bttn2" ng-click="del(student)" value="delete" ></input>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+         </div>
+      </div>
+<script language = "javascript">
+         angular
+            .module('firstApplication', ['ngMaterial'])
+            .controller('layoutController', layoutController);
+
+         function layoutController ($scope, $http) {  
+			$scope.listClicked = function(param){
+				if (param==="create"){
+					document.getElementById('createDiv').style.display = "block";
+					document.getElementById('showDiv').style.display = "none";
+					
+				}
+				else if (param==="show"){
+					//$scope.students = JSON.parse(sessionStorage.getItem("students"));
+					$http.get("https://jsonplaceholder.typicode.com/posts/")
+  					.then(function(response) {
+      					$scope.students = response.data;
+  					});
+					document.getElementById('showDiv').style.display = "block";
+					document.getElementById('createDiv').style.display = "none";
+				}
+			}
+			$scope.validation = function(){
+				function Student(stdId, stdName){
+					this.stdId = stdId;
+					this.stdName = stdName;
+					this.stdInfo = function(){
+						return this.stdId + " " + this.stdName;
+					}
+				}
+				if(document.getElementById('save-btn').innerText === "Save"){
+					alert('save');
+				}
+				else if(document.getElementById('save-btn').innerText === "Update"){
+					student = JSON.parse(sessionStorage.getItem('student'));
+					student.title = null;
+					student.title = $scope.roll;
+					$http.put("https://jsonplaceholder.typicode.com/posts/"+student.id,student)
+  					.then(function(response) {
+      					alert(response.data.title);
+  					});
+
+					document.getElementById('showDiv').style.display = "block";
+					document.getElementById('createDiv').style.display = "none";
+					document.getElementById('save-btn').innerText = "Save";
+				}
+			}
+			$scope.update = function(student){
+				// student.title = "RAfi";
+				// $http.put("https://jsonplaceholder.typicode.com/posts/"+student.id, student)
+				// 	.then(function(response) {
+  		// 			alert("updated "+student.id);
+				// });
+				$scope.roll = student.title;
+				document.getElementById('showDiv').style.display = "none";
+				document.getElementById('createDiv').style.display = "block";
+				document.getElementById('save-btn').innerText = "Update";
+				sessionStorage.setItem("student", JSON.stringify(student));
+			}
+			$scope.del = function(id){
+				alert("delete"+student.id);
+			}
+        }	  
+      </script>
+   </body>
+
+</html>

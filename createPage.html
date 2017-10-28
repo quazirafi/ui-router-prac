@@ -1,0 +1,14 @@
+<div id="createDiv" style="background:gray;margin-top:100px;height:760px;width:600px;margin-left:400px;">
+	<p style="font-size:200%;padding-top:50px;color: white;text-align:center">Registration Form</p>
+	<form name="stdInfo" style="padding-top:20px">
+		<md-input-container>
+			<input placeholder="TItle" style="width: 360px; height: 60px; background:white" type="text" ng-model="roll" name="roll" required>
+			<div ng-show = "stdInfo.roll.$touched || (stdInfo.roll.$dirty && stdInfo.roll.$invalid)" style="color:red">
+				<div ng-show = "stdInfo.roll.$error.required" >Title is required!</div>
+			</div>
+		</md-input-container>
+		<br>
+		<button style="width: 200px; height: 40px;margin-top:30px;" id="save-btn" class="bttn" ng-click="validation()" 
+		ng-disabled="stdInfo.roll.$invalid">Save</button>
+	</form>
+</div>
